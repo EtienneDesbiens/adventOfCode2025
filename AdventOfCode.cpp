@@ -162,7 +162,7 @@ void Challenge2_1()
 
 void Challenge2_2()
 {
-	std::cout << "Challenge 2_1\n";
+	std::cout << "Challenge 2_2\n";
 
 	std::ifstream file("2_input.txt");
 
@@ -236,5 +236,5 @@ int main()
     //Challenge1_1();
 	//Challenge1_2();
 	//Challenge2_1();
-	Challenge2_1();
+	Challenge2_2();
 }
