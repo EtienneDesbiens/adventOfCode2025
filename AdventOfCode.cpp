@@ -231,10 +231,92 @@ void Challenge2_2()
 	std::cout << total << std::endl;
 }
 
+void Challenge3_1()
+{
+	std::cout << "Challenge 3_1\n";
+
+	std::ifstream file("3_input.txt");
+
+	if (!file.is_open()) {
+		std::cerr << "Error opening file!" << std::endl;
+		return;
+	}
+	int total = 0;
+
+	std::string line;
+
+	while (std::getline(file, line)) {
+		std::string firstNumber = "";
+		std::string secondNumber = "";
+
+		int index = 0;
+		for (int i = 0; i < line.size() - 1; i++)
+		{
+			if (line[i] > firstNumber[0])
+			{
+				firstNumber = line[i];
+				index = i;
+			}
+		}
+
+		for (int j = index + 1; j < line.size(); j++)
+		{
+			if (line[j] > secondNumber[0])
+			{
+				secondNumber = line[j];
+			}
+		}
+		//std::cout << std::stoi(firstNumber + secondNumber) << std::endl;
+		total += std::stoi(firstNumber + secondNumber);
+	}
+
+	std::cout << total << std::endl;
+}
+
+void Challenge3_2()
+{
+	std::cout << "Challenge 3_2\n";
+
+	std::ifstream file("3_input.txt");
+
+	if (!file.is_open()) {
+		std::cerr << "Error opening file!" << std::endl;
+		return;
+	}
+	long long total = 0;
+
+	std::string line;
+
+	while (std::getline(file, line)) {
+	std::string number = "";
+
+		int lastChosenIndex = -1;
+
+		while (number.size() <= 12)
+		{
+			number += "0";
+			for (int i = lastChosenIndex + 1; i < line.size() - (12 - number.size()); i++)
+			{
+				if (line[i] > number[number.size()-1])
+				{
+					number[number.size() - 1] = line[i];
+					lastChosenIndex = i;
+				}
+			}
+		}
+		number.pop_back();
+		total += std::stoll(number);
+	}
+
+	std::cout << total << std::endl;
+}
+
 int main()
 {
     //Challenge1_1();
 	//Challenge1_2();
 	//Challenge2_1();
-	Challenge2_2();
+	//Challenge2_2();
+	//Challenge3_1();
+	Challenge3_2();
 }
