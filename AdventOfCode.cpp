@@ -6,6 +6,7 @@
 #include <string>
 #include <list>
 #include <algorithm>
+#include <vector>
 
 void Challenge1_1()
 {
@@ -311,6 +312,184 @@ void Challenge3_2()
 	std::cout << total << std::endl;
 }
 
+void Challenge4_1()
+{
+	std::cout << "Challenge 4_1\n";
+
+	std::ifstream file("4_input.txt");
+
+	if (!file.is_open()) {
+		std::cerr << "Error opening file!" << std::endl;
+		return;
+	}
+	int total = 0;
+
+	std::vector<std::string> readfile;
+
+	std::vector<std::vector<int>> gridAdjacent;
+	std::string line;
+	int nbLines = 0;
+	int lineWidth = 0;
+
+	while (std::getline(file, line))
+	{
+		readfile.push_back(line);
+	}
+	
+	lineWidth = readfile[0].size();
+	nbLines = readfile.size();
+
+	gridAdjacent.resize(lineWidth, std::vector<int>(nbLines));
+
+	int adjacentRolls = 0;
+
+	for (int x = 0; x < lineWidth; x++)
+	{
+		for (int y = 0; y < nbLines; y++)
+		{
+			if (!(x < 0 || x >= lineWidth || y < 0 || y >= nbLines))
+			{
+				if (readfile[y][x] == '@')
+				{
+					if (x > 0 && y > 0)
+						gridAdjacent[x - 1][ y - 1]++;
+					if (x > 0)
+						gridAdjacent[x - 1][ y]++;
+					if (x > 0 && y < nbLines - 1)
+						gridAdjacent[x - 1][ y + 1]++;
+					if (y > 0)
+						gridAdjacent[x][ y - 1]++;
+					if (y < nbLines - 1)
+						gridAdjacent[x][ y + 1]++;
+					if (x < lineWidth - 1 && y > 0)
+						gridAdjacent[x + 1][ y - 1]++;
+					if (x < lineWidth - 1)
+						gridAdjacent[x + 1][ y]++;
+					if (x < lineWidth - 1 && y < nbLines - 1)
+						gridAdjacent[x + 1][ y + 1]++;
+				}
+			}
+		}
+	}
+
+	for (int x = 0; x < lineWidth; x++)
+	{
+		for (int y = 0; y < nbLines; y++)
+		{
+			if (gridAdjacent[x][y] < 4 && readfile[y][x] == '@')
+				total++;
+		}
+	}
+
+	std::cout << total << std::endl;
+}
+
+int ProcessRolls(std::string filepath)
+{
+	std::ifstream file(filepath);
+
+	if (!file.is_open()) {
+		std::cerr << "Error opening file!" << std::endl;
+		return 0;
+	}
+	int total = 0;
+
+	std::vector<std::string> readfile;
+
+	std::vector<std::vector<int>> gridAdjacent;
+	std::string line;
+	int nbLines = 0;
+	int lineWidth = 0;
+
+	while (std::getline(file, line))
+	{
+		readfile.push_back(line);
+	}
+
+	lineWidth = readfile[0].size();
+	nbLines = readfile.size();
+
+	gridAdjacent.resize(lineWidth, std::vector<int>(nbLines));
+
+	int adjacentRolls = 0;
+
+	for (int x = 0; x < lineWidth; x++)
+	{
+		for (int y = 0; y < nbLines; y++)
+		{
+			if (!(x < 0 || x >= lineWidth || y < 0 || y >= nbLines))
+			{
+				if (readfile[y][x] == '@')
+				{
+					if (x > 0 && y > 0)
+						gridAdjacent[x - 1][y - 1]++;
+					if (x > 0)
+						gridAdjacent[x - 1][y]++;
+					if (x > 0 && y < nbLines - 1)
+						gridAdjacent[x - 1][y + 1]++;
+					if (y > 0)
+						gridAdjacent[x][y - 1]++;
+					if (y < nbLines - 1)
+						gridAdjacent[x][y + 1]++;
+					if (x < lineWidth - 1 && y > 0)
+						gridAdjacent[x + 1][y - 1]++;
+					if (x < lineWidth - 1)
+						gridAdjacent[x + 1][y]++;
+					if (x < lineWidth - 1 && y < nbLines - 1)
+						gridAdjacent[x + 1][y + 1]++;
+				}
+			}
+		}
+	}
+
+	std::ofstream outputFile("4_temp.txt");
+
+	for (int x = 0; x < lineWidth; x++)
+	{
+		std::string tempLine = "";
+		for (int y = 0; y < nbLines; y++)
+		{
+			if (gridAdjacent[x][y] < 4 && readfile[y][x] == '@')
+			{
+				total++;
+				tempLine+=(".");
+			}
+			else if (readfile[y][x] == '.')
+			{
+				tempLine += (".");
+			}
+			else
+			{
+				tempLine += ("@");
+			}
+		}
+		outputFile << tempLine << std::endl;
+	}
+	
+	outputFile.close();
+	return total;
+}
+
+void Challenge4_2()
+{
+	std::cout << "Challenge 4_2\n";
+	int total = ProcessRolls("4_input.txt");
+	while (1)
+	{
+		int temp = ProcessRolls("4_temp.txt");
+		if (temp == 0)
+		{
+			break;
+		}
+		else
+		{
+			total += temp;
+		}
+	}
+
+	std::cout << total << std::endl;
+}
+
 int main()
 {
     //Challenge1_1();
@@ -318,5 +497,6 @@ int main()
 	//Challenge2_1();
 	//Challenge2_2();
 	//Challenge3_1();
-	Challenge3_2();
+	//Challenge3_2();
+	Challenge4_2();
 }
