@@ -490,6 +490,147 @@ void Challenge4_2()
 	std::cout << total << std::endl;
 }
 
+void Challenge5_1()
+{
+	std::cout << "Challenge 5_1\n";
+
+	std::ifstream file("5_input.txt");
+
+	if (!file.is_open()) {
+		std::cerr << "Error opening file!" << std::endl;
+		return;
+	}
+
+	std::string line;
+	std::vector<std::vector<long long>> ingredients;
+	
+	int total = 0;
+
+	bool isFirstStage = true;
+
+	while (std::getline(file, line))
+	{
+		if (line == "")
+		{
+			isFirstStage = false;
+			continue;
+		}
+
+		if (isFirstStage)
+		{
+			long long startIndex;
+			long long endIndex;
+
+			int posComma = line.find('-');
+			startIndex = stoll(line.substr(0, posComma));
+			endIndex = stoll(line.substr(posComma + 1));
+
+			ingredients.push_back({ startIndex, endIndex });
+		}
+		else
+		{
+			for (int i = 0; i < ingredients.size(); i++)
+			{
+				long long lineNumber = stoll(line);
+				if (lineNumber >= ingredients[i][0] && lineNumber <= ingredients[i][1])
+				{
+					total++;
+					break;
+				}
+			}
+		}
+	}
+	std::cout << total << std::endl;
+}
+
+void Challenge5_2()
+{
+	std::cout << "Challenge 5_2\n";
+
+	std::ifstream file("5_input.txt");
+
+	if (!file.is_open()) {
+		std::cerr << "Error opening file!" << std::endl;
+		return;
+	}
+
+	std::string line;
+	std::vector<std::vector<long long>> ingredients;
+
+	long long total = 0;
+	bool isFirstStage = true;
+
+	long long biggestIndex = 0;
+	long long smallestIndex = -1;
+
+	while (std::getline(file, line))
+	{
+		if (isFirstStage)
+		{
+			if (line == "")
+			{
+				isFirstStage = false;
+				continue;
+			}
+
+			long long startIndex;
+			long long endIndex;
+
+			int posComma = line.find('-');
+			startIndex = stoll(line.substr(0, posComma));
+			endIndex = stoll(line.substr(posComma + 1));
+
+			ingredients.push_back({ startIndex, endIndex });
+			if (endIndex > biggestIndex)
+			{
+				biggestIndex = endIndex;
+			}
+			if (startIndex < smallestIndex || smallestIndex == -1)
+			{
+				smallestIndex = startIndex;
+			}
+		}
+	}
+		
+	while (1)
+	{
+		bool shouldBreak = false;
+		for (int i = 0; i < ingredients.size(); i++)
+		{
+			for (int j = 0; j < i; j++)
+			{
+				if (i == j)
+				{
+					continue;
+				}
+				if (((ingredients[i][0] <= ingredients[j][0]) && (ingredients[i][1] >= ingredients[j][0])) || ((ingredients[i][1] >= ingredients[j][1]) && (ingredients[i][0] <= ingredients[j][1])) || ((ingredients[i][0] >= ingredients[j][0]) && (ingredients[i][1] <= ingredients[j][1])) || ((ingredients[i][0] <= ingredients[j][0]) && (ingredients[i][1] >= ingredients[j][1])))
+				{
+					//Chevauche
+					long long bottomBoundary = ingredients[i][0] < ingredients[j][0] ? ingredients[i][0] : ingredients[j][0];
+					long long topBoundary = ingredients[i][1] > ingredients[j][1] ? ingredients[i][1] : ingredients[j][1];
+					ingredients[i] = { bottomBoundary, topBoundary };
+					ingredients.erase(ingredients.begin() + j);
+					shouldBreak = true;
+					break;
+				}
+			}
+			if (shouldBreak)
+				break;
+		}
+		if (!shouldBreak)
+		{
+			break;
+		}
+	}
+
+	for (int i = 0; i < ingredients.size(); i++)
+	{
+		total += ingredients[i][1] - ingredients[i][0] + 1;
+	}
+
+	std::cout << total << std::endl;
+}
+
 int main()
 {
     //Challenge1_1();
@@ -498,5 +639,7 @@ int main()
 	//Challenge2_2();
 	//Challenge3_1();
 	//Challenge3_2();
-	Challenge4_2();
+	//Challenge4_2();
+	//Challenge5_1();
+	Challenge5_2();
 }
