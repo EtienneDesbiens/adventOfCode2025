@@ -631,6 +631,301 @@ void Challenge5_2()
 	std::cout << total << std::endl;
 }
 
+void Challenge6_1()
+{
+	std::cout << "Challenge 6_1\n";
+
+	std::ifstream file("6_input.txt");
+
+	if (!file.is_open()) {
+		std::cerr << "Error opening file!" << std::endl;
+		return;
+	}
+
+	std::string line;
+	
+	std::vector<std::string> equations;
+	std::string operators;
+
+	long long total = 0;
+
+	while (std::getline(file, line))
+	{
+		if (line[0] == '+' || line[0] == '*')
+		{
+			for (long i = 0; i < line.size(); i++)
+			{
+				if (line[i] != ' ')
+				{
+					operators.push_back(line[i]);
+				}
+			}
+
+			std::vector<std::vector<long long>> numbers;
+			numbers.resize(operators.size());
+
+			std::string tempNumber = "";
+
+			for (long i = 0; i < equations.size(); i++)
+			{
+				long index = 0;
+				for (long j = 0; j < equations[i].size(); j++)
+				{
+					if (equations[i][j] == ' ' && tempNumber.size() > 0)
+					{
+						numbers[index].push_back(stoll(tempNumber));
+						tempNumber = "";
+						index++;
+					}
+					else if (equations[i][j] != ' ')
+					{
+						tempNumber.push_back(equations[i][j]);
+					}
+				}
+
+				if (tempNumber.size() > 0)
+				{
+					numbers[index].push_back(stoll(tempNumber));
+					tempNumber = "";
+				}
+			}
+			for (long i = 0; i < operators.size(); i++)
+			{
+				if (operators[i] == '+')
+				{
+					for (long j = 0; j < equations.size(); j++)
+					{
+						total += numbers[i][j];
+					}
+				}
+				else
+				{
+					long long temptotal = 1;
+					for (long j = 0; j < equations.size(); j++)
+					{
+						temptotal *= numbers[i][j];
+					}
+					total += temptotal;
+				}
+			}
+		}
+		else
+		{
+			equations.push_back(line);
+		}
+	}
+
+
+	std::cout << total << std::endl;
+}
+
+void Challenge6_2()
+{
+	std::cout << "Challenge 6_2\n";
+
+	std::ifstream file("6_input.txt");
+
+	if (!file.is_open()) {
+		std::cerr << "Error opening file!" << std::endl;
+		return;
+	}
+
+	std::string line;
+
+	std::vector<std::string> equations;
+	std::string operators;
+
+	long long total = 0;
+	int signIndex = 0;
+
+	while (std::getline(file, line))
+	{
+		if (line[0] == '+' || line[0] == '*')
+		{
+			for (long i = 0; i < line.size(); i++)
+			{
+				if (line[i] != ' ')
+				{
+					operators.push_back(line[i]);
+				}
+			}
+
+			std::vector<std::vector<long long>> numbers;
+			numbers.resize(operators.size());
+
+			long long tempMult = 0;
+			bool justSkipped = false;
+			for (int colonne = 0; colonne < equations[0].size(); colonne++)
+			{
+				if (equations[0][colonne] == ' ' && equations[1][colonne] == ' ' && equations[2][colonne] == ' ' && equations[3][colonne] == ' ')
+				{
+					if (!justSkipped)
+					{
+						signIndex++;
+						total += tempMult;
+						tempMult = 0;
+					}
+					justSkipped = true;
+				}
+				else
+				{
+					justSkipped = false;
+					long long tempNum = 0;
+
+					for (int indexChiffre = 0; indexChiffre < equations.size(); indexChiffre++)
+					{
+						if (equations[indexChiffre][colonne] >= '0')
+						{
+							if (tempNum == 0)
+								tempNum = equations[indexChiffre][colonne] - '0';
+							else
+							{
+								tempNum *= 10;
+								tempNum += equations[indexChiffre][colonne] - '0';
+							}
+						}
+					}
+
+					if (operators[signIndex] == '+')
+						total += tempNum;
+					else
+					{
+						if (tempMult == 0)
+							tempMult = tempNum;
+						else
+							tempMult *= tempNum;
+					}
+				}
+			}
+			total += tempMult;
+			tempMult = 0;
+		}
+		else
+		{
+			equations.push_back(line);
+		}
+	}
+
+	std::cout << total << std::endl;
+}
+
+void Challenge7_1()
+{
+	std::cout << "Challenge 7_1\n";
+
+	std::ifstream file("7_input.txt");
+
+	if (!file.is_open()) {
+		std::cerr << "Error opening file!" << std::endl;
+		return;
+	}
+
+	std::string line;
+
+	int total = 0;
+
+	std::vector<int> beamPositions;
+
+	while (std::getline(file, line))
+	{
+		for (int i = 0; i < line.length(); i++)
+		{
+			if (line[i] == 'S')
+			{
+				beamPositions.push_back(i);
+			}
+			else if (line[i] == '^')
+			{
+				for (int j = 0; j < beamPositions.size(); j++)
+				{
+					if (beamPositions[j] == i)
+					{
+						beamPositions[j] = i - 1;
+						beamPositions.push_back(i + 1);
+						total++;
+					}
+				}
+				std::sort(beamPositions.begin(), beamPositions.end());
+				beamPositions.erase(unique(beamPositions.begin(), beamPositions.end()), beamPositions.end());
+			}
+		}
+	}
+	std::cout << total << std::endl;
+}
+
+void Challenge7_2()
+{
+	std::cout << "Challenge 7_2\n";
+
+	std::ifstream file("7_input.txt");
+
+	if (!file.is_open()) {
+		std::cerr << "Error opening file!" << std::endl;
+		return;
+	}
+
+	std::string line;
+
+	long long total = 0;
+
+	std::vector<long long> beamPositions;
+	//std::vector<int> previousBeamAmounts;
+	std::vector<long long> beamAmounts;
+
+	while (std::getline(file, line))
+	{
+		std::vector<long long>previousBeamAmounts(beamAmounts);
+		std::fill(beamAmounts.begin(), beamAmounts.end(), 0);
+
+		for (int i = 0; i < line.length(); i++)
+		{
+			if (line[i] == 'S')
+			{
+				beamPositions.push_back(i);
+				beamAmounts.resize(line.length(), 0);
+				previousBeamAmounts.resize(line.length(), 0);
+				beamAmounts[i] = 1;
+				previousBeamAmounts[i] = 1;
+			}
+			else if (line[i] == '^')
+			{
+				for (int j = 0; j < beamPositions.size(); j++)
+				{
+					if (beamPositions[j] == i)
+					{
+						beamAmounts[i - 1] = beamAmounts[i - 1] + previousBeamAmounts[i];
+						beamAmounts[i + 1] = beamAmounts[i + 1] + previousBeamAmounts[i];
+
+						beamPositions[j] = i - 1;
+						beamPositions.push_back(i + 1);
+					}
+				} 
+				std::sort(beamPositions.begin(), beamPositions.end());
+				beamPositions.erase(unique(beamPositions.begin(), beamPositions.end()), beamPositions.end());
+			}
+			else if(beamAmounts.size() > 0)
+			{
+				beamAmounts[i] += previousBeamAmounts[i];
+			}
+			
+		}
+
+		//for (long long i : beamAmounts)
+		//	std::cout << i << ' ';
+		//std::cout << std::endl;
+
+		//previousBeamAmounts = beamAmounts;
+
+		//std::fill(beamAmounts.begin(), beamAmounts.end(), 0);
+	}
+
+	for (int i = 0; i < beamAmounts.size(); i++)
+	{
+		total += beamAmounts[i];
+	}
+	std::cout << total << std::endl;
+}
+
 int main()
 {
     //Challenge1_1();
@@ -641,5 +936,9 @@ int main()
 	//Challenge3_2();
 	//Challenge4_2();
 	//Challenge5_1();
-	Challenge5_2();
+	//Challenge5_2();
+	//Challenge6_1();
+	//Challenge6_2();
+	//Challenge7_1();
+	Challenge7_2();
 }

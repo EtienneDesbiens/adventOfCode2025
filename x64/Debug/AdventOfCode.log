@@ -1,0 +1,8 @@
+﻿  AdventOfCode.cpp
+C:\Users\edesbiens\source\repos\AdventOfCode\AdventOfCode\AdventOfCode.cpp(339,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\edesbiens\source\repos\AdventOfCode\AdventOfCode\AdventOfCode.cpp(340,25): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\edesbiens\source\repos\AdventOfCode\AdventOfCode\AdventOfCode.cpp(409,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\edesbiens\source\repos\AdventOfCode\AdventOfCode\AdventOfCode.cpp(410,25): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\edesbiens\source\repos\AdventOfCode\AdventOfCode\AdventOfCode.cpp(524,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\edesbiens\source\repos\AdventOfCode\AdventOfCode\AdventOfCode.cpp(579,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  AdventOfCode.vcxproj -> C:\Users\edesbiens\source\repos\AdventOfCode\x64\Debug\AdventOfCode.exe
